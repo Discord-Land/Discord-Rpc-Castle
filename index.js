@@ -1,13 +1,17 @@
 const client = require('discord-rich-presence')('625398970662780959');
+const path = require('path');
 client.on('connected' , ()=>{
-    console.log('connected ');
-    client.updatePresence({
-        details: "Listining to castle music",
-        state: "coding",
-        largeImageKey: 'logo-2',
-        largeImageText: "castle-music.site",
-        smallImageKey: 'smallimage',
-        smallImageText: "Small Image Hover Text",
-        instance: true,
-      });
+  console.log('connected')
 })
+setInterval(()=>{
+  const fileName = path.resolve('./current.json')
+  delete require.cache[fileName];
+  const current = require('./current.json')
+  client.updatePresence({
+    details: current[0].song_artist,
+    state:   current[0].song_name,
+    largeImageKey: 'logo-2',
+    largeImageText: "castle-music.site",
+    instance: true,
+  });
+} , 5000)
